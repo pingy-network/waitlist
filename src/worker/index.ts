@@ -45,8 +45,8 @@ app.post("/api/waitlist", verify, async (c) => {
 
     if (!res.ok) {
       const body = await res.text();
-      console.error("Airtable API error", res.status, body);
-      return c.json({ error: "failed to create Airtable record" }, 500);
+      console.error("Airtable Error", res.status, body);
+      return c.json({ error: "Airtable Error", status: res.status, body: body }, 500);
     }
 
     return c.json({ ok: true });
