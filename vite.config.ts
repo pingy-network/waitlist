@@ -4,4 +4,10 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 
 export default defineConfig({
   plugins: [react(), cloudflare()],
+  server: {
+    port: 5173,
+    proxy: {
+      "/api": "http://127.0.0.1:8787",
+    },
+  },
 });

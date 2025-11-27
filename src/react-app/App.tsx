@@ -1,64 +1,94 @@
-// src/App.tsx
-
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import cloudflareLogo from "./assets/Cloudflare_Logo.svg";
-import honoLogo from "./assets/hono.svg";
+import { FormEvent, useEffect, useState } from "react";
+import imageLight from "./assets/Pingy-Network-Light.svg";
+import imageDark from "./assets/Pingy-Network-Dark.svg";
 import "./App.css";
+import { createRecord } from "./airtable/airtable";
+
+const key = "pingy-network:waitlist:joined";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [name, setName] = useState("unknown");
+  const [email, setEmail] = useState("");
+  const [valid, setValid] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error" | "joined">("idle");
+
+  useEffect(() => {
+    if (status === "success" || status === "error" || status === "joined") {
+      const timer = setTimeout(() => {
+        setStatus("idle");
+      }, 10000); // 10 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setValid(e.target.validity.valid);
+  };
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!email) return;
+
+    const joi = localStorage.getItem(key);
+    if (joi) {
+      setStatus("joined");
+      return;
+    }
+
+    setStatus("loading");
+    try {
+      await createRecord(email);
+
+      localStorage.setItem(key, email);
+      setStatus("success");
+      setEmail("");
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
+      setStatus("error");
+    }
+  };
 
   return (
     <>
+      <div className="header">
+        <span className="brand">Pingy Network</span>
+      </div>
+
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-        <a href="https://hono.dev/" target="_blank">
-          <img src={honoLogo} className="logo cloudflare" alt="Hono logo" />
-        </a>
-        <a href="https://workers.cloudflare.com/" target="_blank">
-          <img
-            src={cloudflareLogo}
-            className="logo cloudflare"
-            alt="Cloudflare logo"
-          />
-        </a>
+        <img src={imageLight} className="image light-image" alt="Pingy Diagram Light" />
+        <img src={imageDark} className="image dark-image" alt="Pingy Diagram Dark" />
       </div>
-      <h1>Vite + React + Hono + Cloudflare</h1>
-      <div className="card">
-        <button
-          onClick={() => setCount((count) => count + 1)}
-          aria-label="increment"
-        >
-          count is {count}
+
+      <form className="form" onSubmit={handleSubmit}>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={handleChange}
+          placeholder="your@email.com"
+          required
+        />
+
+        <button type="submit" disabled={!valid || status === "loading"}>
+          {status === "loading" ? "Joining..." : "Join the Waitlist"}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <div className="card">
-        <button
-          onClick={() => {
-            fetch("/api/")
-              .then((res) => res.json() as Promise<{ name: string }>)
-              .then((data) => setName(data.name));
-          }}
-          aria-label="get name"
-        >
-          Name from API is: {name}
-        </button>
-        <p>
-          Edit <code>worker/index.ts</code> to change the name
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the logos to learn more</p>
+      </form>
+
+      <h1>
+        Know What You're Signing <br></br> Every Time
+      </h1>
+
+      <p>
+        Blind signing caused ByBit to lose $1.5B in assets. Pingy adds an out-of-band notification
+        service to receive real-time insights of your onchain transactions. Verify what's actually
+        happening before your funds move.
+      </p>
+
+      {status === "success" && <p className="alert success">Thanks for joining the waitlist.</p>}
+      {status === "error" && <p className="alert error">Something went wrong. Please try again.</p>}
+      {status === "joined" && <p className="alert joined">You are already on the list.</p>}
     </>
   );
 }

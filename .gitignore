@@ -194,6 +194,6 @@ dist
 ### Wrangler ###
 .wrangler/
 .env*
-!.env.example
+!.env.sample
 .dev.vars*
-!.dev.vars.example
+!.dev.vars.sample

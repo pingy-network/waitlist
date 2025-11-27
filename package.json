@@ -1,9 +1,9 @@
 {
-  "name": "vite-react-template",
-  "description": "A template for building a React application with Vite, Hono, and Cloudflare Workers",
+  "name": "waitlist",
+  "description": "The landing page for the Pingy Network waitlist",
   "private": true,
   "cloudflare": {
-    "label": "Vite React Template",
+    "label": "waitlist",
     "products": [
       "Workers"
     ],
@@ -13,6 +13,7 @@
     "publish": true
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.7.5",
     "hono": "4.8.2",
     "react": "19.0.0",
     "react-dom": "19.0.0"
@@ -31,16 +32,16 @@
     "typescript": "5.8.3",
     "typescript-eslint": "8.35.0",
     "vite": "^6.0.0",
-    "wrangler": "4.21.x"
+    "wrangler": "^4.51.0"
   },
   "scripts": {
     "build": "tsc -b && vite build",
-    "cf-typegen": "wrangler types",
-    "check": "tsc && vite build && wrangler deploy --dry-run",
-    "deploy": "wrangler deploy",
-    "dev": "vite",
+    "cf-typegen": "./node_modules/.bin/wrangler types",
+    "check": "tsc && vite build && ./node_modules/.bin/wrangler deploy --dry-run",
+    "dev:frontend": "vite dev",
+    "dev:backend": "./node_modules/.bin/wrangler dev",
     "lint": "eslint .",
-    "preview": "npm run build && vite preview"
+    "preview": "bun run build && vite preview"
   },
   "type": "module"
 }
