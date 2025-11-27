@@ -38,6 +38,7 @@
     "build": "tsc -b && vite build",
     "cf-typegen": "./node_modules/.bin/wrangler types",
     "check": "tsc && vite build && ./node_modules/.bin/wrangler deploy --dry-run",
+    "deploy": "./node_modules/.bin/wrangler deploy",
     "dev:frontend": "vite dev",
     "dev:backend": "./node_modules/.bin/wrangler dev",
     "lint": "eslint .",
