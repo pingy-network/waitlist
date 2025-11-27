@@ -83,7 +83,7 @@ function App() {
       <p>
         Blind signing caused ByBit to lose $1.5B in assets. Pingy adds an out-of-band notification
         service to receive real-time insights of your onchain transactions. Verify what's actually
-        happening before your any funds move out of your multisig.
+        happening before any funds move out of your multisig.
       </p>
 
       {status === "success" && <p className="alert success">Thanks for joining the waitlist.</p>}
