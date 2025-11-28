@@ -10,14 +10,31 @@
 .header {
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 0;
+  width: 100%;
+
   display: flex;
+  justify-content: space-between;   /* ← title left, docs right */
   align-items: center;
-  gap: 10px;
-  padding: 16px 32px;
+
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
-.brand {
+.documentation {
+  margin-right: 20px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #4da3ff;
+  text-decoration: none;
+}
+
+.documentation:hover {
+  text-decoration: underline;
+}
+
+.title {
+  margin-left: 20px;
   font-size: 3em;
   font-weight: 800;
   color: #3a94e3;
@@ -176,7 +193,8 @@ p {
     padding: 8px 12px;
   }
 
-  .brand {
+  .title {
+    margin-left: 0;
     font-size: 1.4rem;
   }
 

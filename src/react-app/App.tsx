@@ -53,7 +53,16 @@ function App() {
   return (
     <>
       <div className="header">
-        <span className="brand">Pingy Network</span>
+        <span className="title">Pingy Network</span>
+
+        <a
+          href="https://docs.pingy.network"
+          className="documentation"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Documentation
+        </a>
       </div>
 
       <div>
@@ -81,9 +90,9 @@ function App() {
       </h1>
 
       <p>
-        Blind signing caused ByBit to lose $1.5B in assets. Pingy adds an out-of-band notification
-        service to receive real-time insights of your onchain transactions. Verify what's actually
-        happening before any funds move out of your multisig.
+        <b>Blind signing</b> caused ByBit to lose $1.5B in assets. Pingy adds an out-of-band
+        notification service to receive real-time insights of your onchain transactions. Verify
+        what's actually happening before any funds move out of your multisig.
       </p>
 
       {status === "success" && <p className="alert success">Thanks for joining the waitlist.</p>}
